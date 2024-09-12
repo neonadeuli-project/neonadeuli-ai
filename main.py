@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from dotenv import load_dotenv
-from clovax import CompletionExecutor
+from clovax import CompletionExecutor, SlidingWindowExecutor
 from models import ChatRequest
 import os
 
@@ -16,10 +16,20 @@ async def chat(request:ChatRequest):
             api_key_primary_val=os.getenv("API_PRIMARY_VALUE"),
             request_id='0c5652e1-2810-4e8f-a58d-620a9b9e2b71'
         )
-        preset_text = [{"role":"user","content":request.content}]
+        slidingwindow_executor = SlidingWindowExecutor(
+            host='https://clovastudio.apigw.ntruss.com',
+            api_key=os.getenv("API_KEY"),
+            api_key_primary_val=os.getenv("API_PRIMARY_VALUE"),
+        )
 
+        preset_text = [{"role":"user", "content":request.content}]
         request_data = {
-            'messages': preset_text,
+            'messages' : preset_text,
+            'maxTokens' : 2000
+        }
+        adjusted_messages = slidingwindow_executor.execute(request_data)
+        request_data = {
+            'messages': adjusted_messages,
             'topP': 0.8,
             'topK': 0,
             'maxTokens': 256,
