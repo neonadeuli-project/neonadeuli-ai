@@ -4,7 +4,7 @@ import streamlit as st
 with st.sidebar:
     password = st.text_input("Password", key="chatbot_api_key", type="password")
 
-st.title("💬 Quiz")
+st.title("⭕❌ Quiz")
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
 
