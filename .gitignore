@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,vim,git,flask
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,vim,git,flask
 
+#streamlit
+.streamlit/*.toml
+
 ### Flask ###
 instance/*
 !instance/.gitignore
