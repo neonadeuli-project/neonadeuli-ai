@@ -3,8 +3,13 @@ from collections import deque
 import streamlit as st
 import base64
 from utils.prompts import CHAT_PROMPT, QUIZ_PROMPT
+from utils.info import INFO
 
 st.set_page_config(page_title="너나들이", page_icon="https://avatars.githubusercontent.com/u/179866435?s=48&v=5")
+
+@st.dialog(title=" ", width="large")
+def info():
+    st.markdown(INFO, unsafe_allow_html=True)
 
 with st.sidebar:
     password = st.text_input("Password", key="chatbot_api_key", type="password")
@@ -15,7 +20,11 @@ with st.sidebar:
     elif type == 'Quiz':
         st.session_state['system_prompt'] = [{"role":"assistant", "content":QUIZ_PROMPT}]
     st.divider()
-    "[![QA 제보](https://avatars.githubusercontent.com/u/179866435?s=48&v=)](https://www.notion.so/9bfd00945c0f41c285fd165f4810ff75?pvs=4 'QA 페이지')"
+    left, right = st.columns(2)
+    with left:
+        if st.button("안내사항"): info()
+    with right:
+        "[![QA 제보](https://avatars.githubusercontent.com/u/179866435?s=48&v=)](https://www.notion.so/9bfd00945c0f41c285fd165f4810ff75?pvs=4 'QA 페이지')"
 
 st.title(f"{type}")
 
