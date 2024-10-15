@@ -9,7 +9,7 @@ st.set_page_config(page_title="너나들이", page_icon="https://avatars.githubu
 with st.sidebar:
     password = st.text_input("Password", key="chatbot_api_key", type="password")
     st.divider()
-    type = st.radio("챗봇 유형을 선택해주세요.",["Chatbot", "Quiz", "Image"], captions=["국가 유산에 관해 대화하는 챗봇", "국가 유산에 관한 퀴즈를 출제하는 챗봇", "이미지에 대한 질문이 가능한 챗봇"])
+    type = st.radio("챗봇 유형을 선택해주세요.",["Chatbot", "Quiz"], captions=["국가 유산에 관해 대화하는 챗봇", "국가 유산에 관한 퀴즈를 출제하는 챗봇"])
     if type == 'Chatbot':
         st.session_state['system_prompt'] = [{"role":"assistant", "content":CHAT_PROMPT}]
     elif type == 'Quiz':
