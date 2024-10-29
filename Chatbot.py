@@ -5,6 +5,7 @@ from utils.prompts import CHAT_PROMPT, QUIZ_PROMPT, SUMMARY_PROMPT
 from utils.info import INFO
 from utils.text_split import quiz, summary
 from datetime import datetime
+import time
 
 st.set_page_config(page_title="너나들이", page_icon="https://avatars.githubusercontent.com/u/179866435?s=48&v=5")
 
@@ -15,11 +16,12 @@ def info():
 @st.dialog(title=" ", width="large")
 def summarize():
     client = OpenAI(api_key=st.secrets['OpenAI_Key'])
-    summarized_content = client.chat.completions.create(
-        model="gpt-4o-mini", 
-        messages=[{"role":"assistant", "content":SUMMARY_PROMPT}]+list(st.session_state.messages)
-    )
-    print(summarized_content.choices[0].message.content.split('\n'))
+    with st.spinner("대화를 요약중입니다."):
+        time.sleep(2)
+        summarized_content = client.chat.completions.create(
+            model="gpt-4o-mini", 
+            messages=[{"role":"assistant", "content":SUMMARY_PROMPT}]+list(st.session_state.messages)
+        )
     st.markdown(summary(["2024-07-10", datetime.today().strftime("%Y-%m-%d"), summarized_content.choices[0].message.content]), unsafe_allow_html=True)
 
 with st.sidebar:
@@ -32,8 +34,9 @@ with st.sidebar:
         st.session_state['system_prompt'] = [{"role":"assistant", "content":QUIZ_PROMPT}]
     st.divider()
     if st.button("안내사항", icon="⚠️"): info()
-    if st.button("대화요약", icon="📝"): summarize()
     st.link_button(label="너나들이", url="https://www.notion.so/9bfd00945c0f41c285fd165f4810ff75?pvs=4", help="너나들이 QA페이지", icon="🚨")
+    if "messages" in st.session_state and len(st.session_state.messages) >= 2:
+        if st.button("대화요약", icon="📝"): summarize()
 
 st.title(f"{type}")
 
