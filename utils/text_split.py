@@ -1,5 +1,9 @@
-def quiz():
-    return
+def quiz(texts):
+    problem = texts.split('\n')[0]
+    options = texts.split('\n')[2:11:2]
+    answer = texts.split('\n')[12][-2:]
+    explane = texts.split('\n')[14]
+    return {'problem':problem, 'options':options, 'answer':answer, "explane":explane}
 
 def summary(texts:list):
     start_date = texts[0]
